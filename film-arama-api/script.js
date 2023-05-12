@@ -10,48 +10,68 @@ const main = document.getElementById('main')
 const form = document.getElementById('form')
 const input = document.getElementById('search')
 
-getMovie(API_URL)
+acilisFilm(API_URL) // sayfa ilk açıldıgında göstermesi için
 
-async function getMovie(url){
-    const res = await fetch(url)
-    const data = await res.json()
-    showMovie(data.results)
+// ve film aratması için kullanıyoruz
+async function acilisFilm(url){
+    const data = await fetch(url) // burada api çektik
+    const goster = await data.json(); // json verilerini gostere attık
+    // console.log(goster.results)
+
+    if(goster.results.length == 0){
+        hataFilm()
+    }
+    else{
+        filmgoster(goster.results)
+
+    }
 }
 
+function hataFilm(){
+    main.innerHTML = `<div class= "error"> 
+    <div>
+    🫠Galiba İstedigini Bulamadık Bir Daha Deneyelim
+    <img src = "resim.webp">
+    ${setInterval(() => {
+        window.location.reload();
+    }, 4000)}
+    </div>
+    </div>`
+}
 
-function showMovie(movies){
-    main.innerHTML = "";
+function filmgoster(film){
+    main.innerHTML= ""; // main in boş kalması için
 
-    movies.forEach((movie)=>{
-        const title = movie.title;
-        const poster_path = movie.poster_path;
-        const vote_average = movie.vote_average;
-        const overview = movie.overview;
+    // aldıgımız json ı döngüye soktuk
+    film.forEach((filmler)=>{
+        const baslik_title = filmler.title;
+        const reyting_average = filmler.vote_average;
+        const kapak_path = filmler.poster_path;
+        const aciklama_overview = filmler.overview;
 
-        const movieEl = document.createElement("div");
-        movieEl.classList.add("movie");
+        const filmlerKart = document.createElement("div");
+        filmlerKart.classList.add("movie");
 
-        movieEl.insertAdjacentHTML("beforeend",`
-        <img src = "${IMG_PATH + poster_path}" alt = ${title}>
+        filmlerKart.insertAdjacentHTML("beforeend", `
+        <img src = "${IMG_PATH + kapak_path}" alt=${baslik_title}>
         <div class = "movie-info">
-        <h3>${title}</h3>
-        <span class = "${getClassByRate(vote_average)}">${vote_average}</span>
+        <h3>${baslik_title}</h3>
+        <span class="${reyting(reyting_average)}">${reyting_average}</span>
         </div>
-        <div class = "overview">
-        <h3>Overview</h3>
-        ${overview};
+        <div class ="overview">
+        <h3>${aciklama_overview}</h3>
         </div>
         `)
-        main.appendChild(movieEl);
+        main.appendChild(filmlerKart);
     })
 }
 
-
-function getClassByRate(vote){
-    if(vote >= 7){
+// reyting oranlarına göre renk veriyoruz
+function reyting(oran){
+    if(oran >= 7){
         return "green";
     }
-    else if(vote >=5){
+    else if(oran > 5){
         return "orange";
     }
     else{
@@ -59,34 +79,30 @@ function getClassByRate(vote){
     }
 }
 
-const btn = document.querySelector(".btn")
+const btn = document.querySelector(".btn");
 
-form.addEventListener("submit", (e)=>{
+form.addEventListener("submit", function(e){
     e.preventDefault();
+    let inputValue = input.value;
 
-    const searchinput = input.value;
-
-    if(searchinput && searchinput !== " "){
-        getMovie(SEARCH_API + searchinput)
-        input.innerHTML = "";
+    if(inputValue && inputValue !== " "){
+        acilisFilm(SEARCH_API + inputValue);
+        input.value = " ";
     }
     else{
         window.location.reload();
-        console.log("hata")
     }
 })
 
 btn.addEventListener("click", function(e){
     e.preventDefault();
-
-    const searchinput = input.value;
-
-    if(searchinput && searchinput !== " "){
-        getMovie(SEARCH_API + searchinput)
-        input.innerHTML = "";
+    let inputValue = input.value;
+    
+    if(inputValue && inputValue !== " "){
+        acilisFilm(SEARCH_API + inputValue);
+        input.value = "";
     }
     else{
         window.location.reload();
-        console.log("hata")
     }
 })
