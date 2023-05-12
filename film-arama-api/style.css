@@ -15,6 +15,14 @@
 
 body{
     background-color: var(--primary-color);
+    position: relative;
+}
+
+.orta-h2{
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+    margin: 20px 0;
 }
 
 header{
@@ -38,6 +46,8 @@ header h2{
     font-size: 20px;
     color: #fff;
     margin-left: 20px;
+    display: flex;
+    align-items: center;
 }
 
 header h2 span{
@@ -76,6 +86,21 @@ main{
     justify-content: center;
 }
 
+.error div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 20px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.error div img{
+    width: 400px;
+    margin: 20px auto;
+}
+
 .movie{
     width: 300px;
     margin: 10px;
@@ -100,6 +125,7 @@ main{
 .movie-info h3{
     font-size: 17px;
     padding: 8px;
+    color: #fff;
 }
 
 .movie-info span{
@@ -157,4 +183,48 @@ main{
 
 .btn i{
     color: #fff;
+}
+
+@media only screen and (max-width: 900px) {
+    html,body{
+        overflow-x: hidden;
+    }
+    header{
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        height: auto;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+    header h2{
+        font-size: 16px;
+        margin: 10px 0;
+    }
+    form{
+        display: flex;
+    }
+    main{
+        margin-top: 30%;
+    }
+    main .error{
+    
+    }
+    
+    .error div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .error div img{
+        width: auto;
+        margin: 20px auto;
+    }
+    
 }
